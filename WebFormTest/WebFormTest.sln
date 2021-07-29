@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31424.327
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountingNote", "AccountingNote\AccountingNote.csproj", "{1F4A8641-BDDA-4C9E-BE7D-433054A4E10C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountNote.DBSource", "AccountNote.DBSource\AccountNote.DBSource.csproj", "{AFCFD5E2-024E-4631-9EF8-10E8D0C41BAC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1F4A8641-BDDA-4C9E-BE7D-433054A4E10C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F4A8641-BDDA-4C9E-BE7D-433054A4E10C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F4A8641-BDDA-4C9E-BE7D-433054A4E10C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F4A8641-BDDA-4C9E-BE7D-433054A4E10C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFCFD5E2-024E-4631-9EF8-10E8D0C41BAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFCFD5E2-024E-4631-9EF8-10E8D0C41BAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFCFD5E2-024E-4631-9EF8-10E8D0C41BAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFCFD5E2-024E-4631-9EF8-10E8D0C41BAC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6F78EEC2-24A0-4AD0-908F-A6ADB27596A3}
+	EndGlobalSection
+EndGlobal
