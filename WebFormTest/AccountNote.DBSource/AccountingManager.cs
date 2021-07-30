@@ -144,30 +144,41 @@ namespace AccountNote.DBSource
                          @body);
              
                 ";
-            using (SqlConnection connection = new SqlConnection(connectionString))
+
+            List<SqlParameter> paramlist = new List<SqlParameter>();
+            paramlist.Add(new SqlParameter("@userID", userID));
+            paramlist.Add(new SqlParameter("@caption", caption));
+            paramlist.Add(new SqlParameter("@amount", amount));
+            paramlist.Add(new SqlParameter("@actType", actType));
+            paramlist.Add(new SqlParameter("@creatDate", DateTime.Now));
+            paramlist.Add(new SqlParameter("@body", body));
+            try
             {
-                using (SqlCommand command = new SqlCommand(dbCommandString, connection))
-                {
+                //using (SqlConnection connection = new SqlConnection(connectionString))
+                //{
+                //    using (SqlCommand command = new SqlCommand(dbCommandString, connection))
+                //    {
 
-                    command.Parameters.AddWithValue("@userID", userID);//確保資料安全性
-                    command.Parameters.AddWithValue("@caption", caption);//確保資料安全性
-                    command.Parameters.AddWithValue("@amount", amount);//確保資料安全性
-                    command.Parameters.AddWithValue("@actType", actType);//確保資料安全性
-                    command.Parameters.AddWithValue("@creatDate", DateTime.Now);//確保資料安全性
-                    command.Parameters.AddWithValue("@body", body);//確保資料安全性
-
-                    try
-                    {
-                        connection.Open();
-                        int effectRows = command.ExecuteNonQuery();
+                //        command.Parameters.AddWithValue("@userID", userID);//確保資料安全性
+                //        command.Parameters.AddWithValue("@caption", caption);//確保資料安全性
+                //        command.Parameters.AddWithValue("@amount", amount);//確保資料安全性
+                //        command.Parameters.AddWithValue("@actType", actType);//確保資料安全性
+                //        command.Parameters.AddWithValue("@creatDate", DateTime.Now);//確保資料安全性
+                //        command.Parameters.AddWithValue("@body", body);//確保資料安全性
 
 
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.ToString());
-                    }
-                }
+                //        connection.Open();
+                //        int effectRows = command.ExecuteNonQuery();
+
+
+
+                //    }
+                //}
+                DBhelper.ModifyData(connectionString, dbCommandString, paramlist);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(ex);
             }
         }
 

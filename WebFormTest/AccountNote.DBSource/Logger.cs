@@ -16,6 +16,7 @@ namespace AccountNote.DBSource
                 ";
 
             System.IO.File.AppendAllText("C:\\Users\\p4786\\C sharp\\WebFormTest\\Log.log", msg);
+
             throw ex;
         }
     }
