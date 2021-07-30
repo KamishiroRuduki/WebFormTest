@@ -31,32 +31,43 @@ namespace AccountNote.DBSource
                     FROM Accounting
                     WHERE UserID = @userID
                   ";
-            using (SqlConnection connection = new SqlConnection(connStr))
+
+            List<SqlParameter> list = new List<SqlParameter>();
+            list.Add(new SqlParameter("@userID", userID));
+            try
             {
-                using (SqlCommand command = new SqlCommand(dbCommand, connection))
-                {
-
-                    command.Parameters.AddWithValue("@userID", userID);//確保資料安全性
-                    try
-                    {
-                        connection.Open();
-                        SqlDataReader reader = command.ExecuteReader();
-
-                        DataTable dt = new DataTable();
-                        dt.Load(reader);
-
-
-                        return dt;
-
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.WriteLog(ex);
-                        return null;
-                    }
-                }
+                return DBhelper.ReadDataTable(connStr, dbCommand, list);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(ex);
+                return null;
             }
         }
+
+        //private static DataTable ReadDataTable(string connStr, string dbCommand, List<SqlParameter> list)
+        //{
+        //    using (SqlConnection connection = new SqlConnection(connStr))
+        //    {
+        //        using (SqlCommand command = new SqlCommand(dbCommand, connection))
+        //        {
+
+        //            //    command.Parameters.AddWithValue("@userID", userID);//確保資料安全性
+        //            command.Parameters.AddRange(list.ToArray());
+
+        //                connection.Open();
+        //                SqlDataReader reader = command.ExecuteReader();
+
+        //                DataTable dt = new DataTable();
+        //                dt.Load(reader);
+
+
+        //                return dt;
+
+
+        //        }
+        //    }
+        //}
 
         public static DataRow GetAccounting(int id , string userID)
         {
