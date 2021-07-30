@@ -194,36 +194,49 @@ namespace AccountNote.DBSource
                      ID=@id
              
                 ";
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            List<SqlParameter> paramlist = new List<SqlParameter>();
+            paramlist.Add(new SqlParameter("@userID", userID));
+            paramlist.Add(new SqlParameter("@caption", caption));
+            paramlist.Add(new SqlParameter("@amount", amount));
+            paramlist.Add(new SqlParameter("@actType", actType));
+            paramlist.Add(new SqlParameter("@creatDate", DateTime.Now));
+            paramlist.Add(new SqlParameter("@body", body));
+            paramlist.Add(new SqlParameter("ID", @id));
+            try
             {
-                using (SqlCommand command = new SqlCommand(dbCommandString, connection))
-                {
+                //using (SqlConnection connection = new SqlConnection(connectionString))
+                //{
+                //    using (SqlCommand command = new SqlCommand(dbCommandString, connection))
+                //    {
 
-                    command.Parameters.AddWithValue("@userID", userID);//確保資料安全性
-                    command.Parameters.AddWithValue("@caption", caption);//確保資料安全性
-                    command.Parameters.AddWithValue("@amount", amount);//確保資料安全性
-                    command.Parameters.AddWithValue("@actType", actType);//確保資料安全性
-                    command.Parameters.AddWithValue("@creatDate", DateTime.Now);//確保資料安全性
-                    command.Parameters.AddWithValue("@body", body);//確保資料安全性
-                    command.Parameters.AddWithValue("ID", @id);//確保資料安全性
-
-                    try
-                    {
-                        connection.Open();
-                        int effectRows = command.ExecuteNonQuery();
-                        if (effectRows == 1)
-                            return true;
-                        else
-                            return false;
+                //        command.Parameters.AddWithValue("@userID", userID);//確保資料安全性
+                //        command.Parameters.AddWithValue("@caption", caption);//確保資料安全性
+                //        command.Parameters.AddWithValue("@amount", amount);//確保資料安全性
+                //        command.Parameters.AddWithValue("@actType", actType);//確保資料安全性
+                //        command.Parameters.AddWithValue("@creatDate", DateTime.Now);//確保資料安全性
+                //        command.Parameters.AddWithValue("@body", body);//確保資料安全性
+                //        command.Parameters.AddWithValue("ID", @id);//確保資料安全性
 
 
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.ToString());
-                        return false;
-                    }
-                }
+                //        connection.Open();
+                //        int effectRows = command.ExecuteNonQuery();
+                //        if (effectRows == 1)
+                //            return true;
+                //        else
+                //            return false;
+
+
+
+                //    }
+                //}
+                int effectRows = DBhelper.ModifyData(connectionString, dbCommandString, paramlist);
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(ex);
+                return false;
             }
         }
 
@@ -247,7 +260,7 @@ namespace AccountNote.DBSource
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                Logger.WriteLog(ex);
 
             }
         }

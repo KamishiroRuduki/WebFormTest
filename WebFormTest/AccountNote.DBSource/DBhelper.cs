@@ -63,7 +63,7 @@ namespace AccountNote.DBSource
                 }
             }
         }
-        public static void ModifyData(string connectionString, string dbCommandString, List<SqlParameter> paramlist)
+        public static int ModifyData(string connectionString, string dbCommandString, List<SqlParameter> paramlist)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -73,6 +73,7 @@ namespace AccountNote.DBSource
                     command.Parameters.AddRange(paramlist.ToArray());
                     connection.Open();
                     int effectRows = command.ExecuteNonQuery();
+                    return effectRows;
 
 
 
