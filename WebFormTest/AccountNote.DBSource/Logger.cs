@@ -4,9 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBClasses
+namespace AccountNote.DBSource
 {
-    class Class1
+    public class Logger
     {
+        public static void WriteLog(Exception ex)
+        {
+            string msg =
+                $@" {DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}
+                    {ex.ToString()}
+                ";
+
+            System.IO.File.AppendAllText("C:\\Users\\p4786\\C sharp\\WebFormTest\\Log.log", msg);
+            throw ex;
+        }
     }
 }

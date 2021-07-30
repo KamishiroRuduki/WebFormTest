@@ -38,7 +38,7 @@ namespace AccountingNote.SystemAdmin
                 int id;
                 if(int.TryParse(idtext,out id))
                 {
-                    var drAcc = AccountingManager.GetAccounting(id, dr["UserInfo"].ToString());
+                    var drAcc = AccountingManager.GetAccounting(id, dr["ID"].ToString());
                     if(drAcc == null)
                     {
                         this.ltMsg.Text = "無資料";
@@ -76,7 +76,7 @@ namespace AccountingNote.SystemAdmin
                 return;
             }
 
-            string userID = dr["UserInfo"].ToString();
+            string userID = dr["ID"].ToString();
             string actTypeText = this.ddlActType.SelectedValue;
             string amountText = this.txtAmount.Text;
             string caption = this.txtCaption.Text;

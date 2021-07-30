@@ -13,7 +13,7 @@ namespace AccountNote.DBSource
     {
         public static DataRow GETUserInfo(string id)
         {
-            string connectionString = GetConnectionString();
+            string connectionString = DBhelper.GetConnectionString();
             string dbCommandString =
                 @"SELECT ID, Name 
                   FROM User_info
@@ -50,9 +50,9 @@ namespace AccountNote.DBSource
 
         public static DataRow GETUserInoAccount(string account)
         {
-            string connectionString = GetConnectionString();
+            string connectionString = DBhelper.GetConnectionString();
             string dbCommandString =
-                @"SELECT  [UserInfo] ,[Account],[PWD] ,[Name] ,[Email]
+                @"SELECT  [ID] ,[Account],[PWD] ,[Name] ,[Email]
                    FROM UserInfo
                    WHERE [Account] = @account
                 ";
@@ -84,12 +84,12 @@ namespace AccountNote.DBSource
                 }
             }//自帶connection.close()
         }
-        public static string GetConnectionString()
-        {
-            // string val = ConfigurationManager.AppSettings["ConnectionString"];
-            string val = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            return val;
-        }
+        //public static string GetConnectionString()
+        //{
+        //    // string val = ConfigurationManager.AppSettings["ConnectionString"];
+        //    string val = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+        //    return val;
+        //}
         public static void CreateAccounting(string userID, string caption, int amount, int actType, string body)
         {
             if (amount < 0 || amount > 1000000)
@@ -98,7 +98,7 @@ namespace AccountNote.DBSource
                 throw new ArgumentException("actType必須介於0到1之間");
 
 
-            string connectionString = GetConnectionString();
+            string connectionString = DBhelper.GetConnectionString();
 
             string dbCommandString =
             @"INSERT INTO Accounting

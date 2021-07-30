@@ -7,20 +7,21 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 
+
 namespace AccountNote.DBSource
 {
     public class AccountingManager
     {
-        public static string GetConnectionString()
-        {
-            // string val = ConfigurationManager.AppSettings["ConnectionString"];
-            string val = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            return val;
-        }
+        //public static string GetConnectionString()
+        //{
+        //    // string val = ConfigurationManager.AppSettings["ConnectionString"];
+        //    string val = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+        //    return val;
+        //}
 
         public static DataTable GetAccountingList(string userID)
         {
-            string connStr = GetConnectionString();
+            string connStr = DBhelper.GetConnectionString();
             string dbCommand =
                 $@"SELECT ID,
                          Caption,
@@ -50,7 +51,7 @@ namespace AccountNote.DBSource
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine(ex.ToString());
+                        Logger.WriteLog(ex);
                         return null;
                     }
                 }
@@ -59,7 +60,7 @@ namespace AccountNote.DBSource
 
         public static DataRow GetAccounting(int id , string userID)
         {
-            string connStr = GetConnectionString();
+            string connStr = DBhelper.GetConnectionString();
             string dbCommand =
                 $@"SELECT ID,
                          Caption,
@@ -105,7 +106,7 @@ namespace AccountNote.DBSource
                 throw new ArgumentException("actType必須介於0到1之間");
 
 
-            string connectionString = GetConnectionString();
+            string connectionString = DBhelper.GetConnectionString();
 
             string dbCommandString =
             @"INSERT INTO Accounting
@@ -155,7 +156,7 @@ namespace AccountNote.DBSource
                 throw new ArgumentException("actType必須介於0到1之間");
 
 
-            string connectionString = GetConnectionString();
+            string connectionString = DBhelper.GetConnectionString();
 
             string dbCommandString =
             @"UPDATE [Accounting]    
@@ -206,7 +207,7 @@ namespace AccountNote.DBSource
         public static void  DeleteAccount(int id)
         {
 
-           string connectionString = GetConnectionString();
+           string connectionString = DBhelper.GetConnectionString();
 
             string dbCommandString =
             @"DELETE [Accounting]    

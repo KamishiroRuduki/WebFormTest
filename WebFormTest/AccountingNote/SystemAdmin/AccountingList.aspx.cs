@@ -28,7 +28,7 @@ namespace AccountingNote.SystemAdmin
                 return;
             }
 
-            var dt = AccountingManager.GetAccountingList(dr["UserInfo"].ToString());
+            var dt = AccountingManager.GetAccountingList(dr["ID"].ToString());
             if(dt.Rows.Count>0)
             { 
             this.gvAccountList.DataSource = dt;
