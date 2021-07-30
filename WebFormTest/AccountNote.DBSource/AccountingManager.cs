@@ -82,33 +82,45 @@ namespace AccountNote.DBSource
                     FROM Accounting
                     WHERE ID = @id AND UserID = @userID
                   ";
-            using (SqlConnection connection = new SqlConnection(connStr))
+
+            List<SqlParameter> list = new List<SqlParameter>();
+            list.Add(new SqlParameter("@id", id));
+            list.Add(new SqlParameter("@userID", userID));
+            try
             {
-                using (SqlCommand command = new SqlCommand(dbCommand, connection))
-                {
-
-                    command.Parameters.AddWithValue("@id", id);//確保資料安全性
-                    command.Parameters.AddWithValue("@userID", userID);//確保資料安全性
-                    try
-                    {
-                        connection.Open();
-                        SqlDataReader reader = command.ExecuteReader();
-
-                        DataTable dt = new DataTable();
-                        dt.Load(reader);
-
-
-                        return dt.Rows[0];
-
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.ToString());
-                        return null;
-                    }
-                }
+                return DBhelper.ReadDataRow(connStr, dbCommand,list);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(ex);
+                return null;
             }
         }
+
+        //private static DataRow ReadDataRow(int id, string userID, string connStr, string dbCommand)
+        //{
+        //    using (SqlConnection connection = new SqlConnection(connStr))
+        //    {
+        //        using (SqlCommand command = new SqlCommand(dbCommand, connection))
+        //        {
+
+        //            command.Parameters.AddWithValue("@id", id);//確保資料安全性
+        //            command.Parameters.AddWithValue("@userID", userID);//確保資料安全性
+
+        //                connection.Open();
+        //                SqlDataReader reader = command.ExecuteReader();
+
+        //                DataTable dt = new DataTable();
+        //                dt.Load(reader);
+
+
+        //                return dt.Rows[0];
+
+
+        //        }
+        //    }
+        //}
+
         public static void CreateAccounting(string userID, string caption, int amount, int actType, string body)
         {
             if (amount < 0 || amount > 1000000)

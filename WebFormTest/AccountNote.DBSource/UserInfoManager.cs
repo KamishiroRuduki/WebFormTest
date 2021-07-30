@@ -56,33 +56,45 @@ namespace AccountNote.DBSource
                    FROM UserInfo
                    WHERE [Account] = @account
                 ";
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            List<SqlParameter> list = new List<SqlParameter>();
+            list.Add(new SqlParameter("@account", account));
+
+            try
             {
-                SqlCommand command = new SqlCommand(dbCommandString, connection);
-                command.Parameters.AddWithValue("@account", account);//確保資料安全性
+                return DBhelper.ReadDataRow(connectionString, dbCommandString, list);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(ex);
+                return null;
+            }
+            //using (SqlConnection connection = new SqlConnection(connectionString))
+            //{
+            //    SqlCommand command = new SqlCommand(dbCommandString, connection);
+            //    command.Parameters.AddWithValue("@account", account);//確保資料安全性
 
-                try
-                {
-                    connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
+            //    try
+            //    {
+            //        connection.Open();
+            //        SqlDataReader reader = command.ExecuteReader();
 
-                    DataTable dt = new DataTable();
-                    dt.Load(reader);
-                    reader.Close();
+            //        DataTable dt = new DataTable();
+            //        dt.Load(reader);
+            //        reader.Close();
 
-                    if (dt.Rows.Count == 0)
-                        return null;
+            //        if (dt.Rows.Count == 0)
+            //            return null;
 
-                    DataRow dr = dt.Rows[0];
-                    return dr;
+            //        DataRow dr = dt.Rows[0];
+            //        return dr;
 
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                    return null;
-                }
-            }//自帶connection.close()
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Console.WriteLine(ex.ToString());
+            //        return null;
+            //    }
+            //}//自帶connection.close()
         }
         //public static string GetConnectionString()
         //{

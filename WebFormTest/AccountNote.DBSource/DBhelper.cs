@@ -40,5 +40,28 @@ namespace AccountNote.DBSource
                 }
             }
         }
+        public static DataRow ReadDataRow(  string connStr, string dbCommand, List<SqlParameter> list)
+        {
+            using (SqlConnection connection = new SqlConnection(connStr))
+            {
+                using (SqlCommand command = new SqlCommand(dbCommand, connection))
+                {
+
+                    command.Parameters.AddRange(list.ToArray());
+
+
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    DataTable dt = new DataTable();
+                    dt.Load(reader);
+
+
+                    return dt.Rows[0];
+
+
+                }
+            }
+        }
     }
 }
