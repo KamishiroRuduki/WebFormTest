@@ -69,7 +69,7 @@ namespace AccountNote.DBSource
         //    }
         //}
 
-        public static DataRow GetAccounting(int id , string userID)
+        public static DataRow GetAccounting(int id, string userID)
         {
             string connStr = DBhelper.GetConnectionString();
             string dbCommand =
@@ -88,7 +88,7 @@ namespace AccountNote.DBSource
             list.Add(new SqlParameter("@userID", userID));
             try
             {
-                return DBhelper.ReadDataRow(connStr, dbCommand,list);
+                return DBhelper.ReadDataRow(connStr, dbCommand, list);
             }
             catch (Exception ex)
             {
@@ -227,10 +227,10 @@ namespace AccountNote.DBSource
             }
         }
 
-        public static void  DeleteAccount(int id)
+        public static void DeleteAccount(int id)
         {
 
-           string connectionString = DBhelper.GetConnectionString();
+            string connectionString = DBhelper.GetConnectionString();
 
             string dbCommandString =
             @"DELETE [Accounting]    
@@ -238,28 +238,20 @@ namespace AccountNote.DBSource
                    ID=@id
              
                 ";
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            List<SqlParameter> paramlist = new List<SqlParameter>();
+            paramlist.Add(new SqlParameter("ID", @id));
+
+            try
             {
-                using (SqlCommand command = new SqlCommand(dbCommandString, connection))
-                {
+                DBhelper.ModifyData(connectionString, dbCommandString, paramlist);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
 
-                    command.Parameters.AddWithValue("ID", @id);//確保資料安全性
-
-                    try
-                    {
-                        connection.Open();
-                        int effectRows = command.ExecuteNonQuery();
-
-
-
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.ToString());
-
-                    }
-                }
             }
         }
+
+
     }
 }

@@ -63,5 +63,22 @@ namespace AccountNote.DBSource
                 }
             }
         }
+        public static void ModifyData(string connectionString, string dbCommandString, List<SqlParameter> paramlist)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(dbCommandString, connection))
+                {
+
+                    command.Parameters.AddRange(paramlist.ToArray());
+                    connection.Open();
+                    int effectRows = command.ExecuteNonQuery();
+
+
+
+
+                }
+            }
+        }
     }
 }
