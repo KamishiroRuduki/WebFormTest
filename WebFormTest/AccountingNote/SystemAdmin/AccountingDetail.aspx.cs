@@ -5,27 +5,30 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using AccountingNote.Auth;
 namespace AccountingNote.SystemAdmin
 {
     public partial class AccountingDetail : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (this.Session["UserLoginInfo"] == null)
+
+            if (!AuthManger.IsLogined())
+          //if(!AuthManger.IsLogined())
             {
                 Response.Redirect("/login.aspx");
                 return;
             }
             string account = this.Session["UserLoginInfo"] as string;
-            var dr = UserInfoManager.GETUserInoAccount(account);
-
-            if (dr == null)
+            var cUser = AuthManger.GetCurrentUser();
+            if (cUser == null)
             {
-                Response.Redirect("/login.aspx");
+                this.Session["UserLoginInfo"] = null;
+                Response.Redirect("/Login.aspx");
                 return;
+
             }
-            if(!this.IsPostBack)
+            if (!this.IsPostBack)
             {
             if(this.Request.QueryString["ID"] == null)
             {
@@ -38,7 +41,7 @@ namespace AccountingNote.SystemAdmin
                 int id;
                 if(int.TryParse(idtext,out id))
                 {
-                    var drAcc = AccountingManager.GetAccounting(id, dr["ID"].ToString());
+                    var drAcc = AccountingManager.GetAccounting(id, cUser.ID);
                     if(drAcc == null)
                     {
                         this.ltMsg.Text = "無資料";
@@ -67,16 +70,14 @@ namespace AccountingNote.SystemAdmin
                 return;
             }
 
-            string account = this.Session["UserLoginInfo"] as string;
-            var dr = UserInfoManager.GETUserInoAccount(account);
-
-            if (dr == null)
+            UserInfoModel currentUser = AuthManger.GetCurrentUser();
+            if (currentUser == null)
             {
                 Response.Redirect("/login.aspx");
                 return;
             }
 
-            string userID = dr["ID"].ToString();
+            string userID = currentUser.ID;
             string actTypeText = this.ddlActType.SelectedValue;
             string amountText = this.txtAmount.Text;
             string caption = this.txtCaption.Text;

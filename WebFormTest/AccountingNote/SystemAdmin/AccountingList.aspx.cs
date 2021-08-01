@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using AccountNote.DBSource;
 using System.Data;
 using System.Drawing;
+using AccountingNote.Auth;
 
 namespace AccountingNote.SystemAdmin
 {
@@ -14,21 +15,22 @@ namespace AccountingNote.SystemAdmin
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (this.Session["UserLoginInfo"] == null)
+            //if (this.Session["UserLoginInfo"] == null)
+            if(!AuthManger.IsLogined())
             {               
                 Response.Redirect("/login.aspx");
                 return;
             }
-            string account = this.Session["UserLoginInfo"] as string;
-            var dr = UserInfoManager.GETUserInoAccount(account);
-
-            if(dr == null )
+            var cUser = AuthManger.GetCurrentUser();
+            if (cUser == null)
             {
-                Response.Redirect("/login.aspx");
+                this.Session["UserLoginInfo"] = null;
+                Response.Redirect("/Login.aspx");
                 return;
+
             }
 
-            var dt = AccountingManager.GetAccountingList(dr["ID"].ToString());
+            var dt = AccountingManager.GetAccountingList(cUser.ID);
             if(dt.Rows.Count>0)
             { 
             this.gvAccountList.DataSource = dt;
@@ -44,7 +46,7 @@ namespace AccountingNote.SystemAdmin
 
         protected void btnAdd_Click(object sender, EventArgs e)
         {
-            if (this.Session["UserLoginInfo"] == null)
+            if (!AuthManger.IsLogined())
             {
                 Response.Redirect("/SystemAdmin/UserInfo.aspx");
                 return;

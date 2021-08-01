@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using AccountNote.DBSource;
 using System.Data;
+using AccountingNote.Auth;
 namespace AccountingNote.SystemAdmin
 {
     public partial class UserInfo : System.Web.UI.Page
@@ -14,33 +15,31 @@ namespace AccountingNote.SystemAdmin
         {
             if (!this.IsPostBack)
             {
-                if (this.Session["UserLoginInfo"] is null)
+                if (!AuthManger.IsLogined())
                 {
 
                     Response.Redirect("/Login.aspx");
                     return;
                 }
-
-
-                string account = this.Session["UserLoginInfo"] as string;
-                DataRow dr = UserInfoManager.GETUserInoAccount(account);
-                if (dr == null)
+                //string account = this.Session["UserLoginInfo"] as string;
+                //DataRow dr = UserInfoManager.GETUserInoAccount(account);
+                var cUser = AuthManger.GetCurrentUser();
+                if (cUser == null)
                 {
-                    this.Session["UserLoginInfo"] = null;
                     Response.Redirect("/Login.aspx");
                     return;
 
                 }
-                this.ltAccount.Text = dr["Account"].ToString();
-                this.ltName.Text = dr["Name"].ToString();
-                this.ltEmail.Text = dr["Email"].ToString();
+                this.ltAccount.Text = cUser.Account;
+                this.ltName.Text = cUser.Name;
+                this.ltEmail.Text = cUser.Email;
             }
         }
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-            this.Session["UserLoginInfo"] = null;
-            Response.Redirect("/Login.aspx");
+            AuthManger.Logout();
+            Response.Redirect("/Login.aspx"); //導至登入頁
 
         }
     }

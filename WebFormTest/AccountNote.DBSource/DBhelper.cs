@@ -56,6 +56,8 @@ namespace AccountNote.DBSource
                     DataTable dt = new DataTable();
                     dt.Load(reader);
 
+                    if (dt.Rows.Count == 0)
+                        return null;
 
                     return dt.Rows[0];
 

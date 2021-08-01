@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using AccountNote.DBSource;
+using AccountingNote.Auth;
 namespace AccountingNote
 {
     public partial class Login : System.Web.UI.Page
@@ -28,29 +29,36 @@ namespace AccountingNote
 
             string inp_Account = this.txtAccount.Text;
             string inp_PWD = this.txtPassword.Text;
-            //check
-            if(string.IsNullOrWhiteSpace(inp_Account) || string.IsNullOrWhiteSpace(inp_PWD))
+            string Msg;
+            if(!AuthManger.TryLogin(inp_Account, inp_PWD, out Msg))
             {
-                this.ltMsg.Text = "帳號/密碼錯誤";
+                this.ltMsg.Text = Msg;
                 return;
             }
-            var dr = UserInfoManager.GETUserInoAccount(inp_Account);
-            if(dr == null)
-            {
-                this.ltMsg.Text = "帳號/密碼不允許空白";
-                return;
-            }
+            Response.Redirect("/SystemAdmin/UserInfo.aspx");
+            //check 
+            //if (string.IsNullOrWhiteSpace(inp_Account) || string.IsNullOrWhiteSpace(inp_PWD))
+            //{
+            //    this.ltMsg.Text = "帳號/密碼錯誤";
+            //    return;
+            //}
+            //var dr = UserInfoManager.GETUserInoAccount(inp_Account);
+            //if(dr == null)
+            //{
+            //    this.ltMsg.Text = "帳號/密碼不允許空白";
+            //    return;
+            //}
 
-            if(string.Compare(dr["Account"].ToString(), inp_Account,true) == 0 && string.Compare(dr["PWD"].ToString(), inp_PWD,false) == 0)
-            {
-                this.Session["UserLoginInfo"] = dr["Account"].ToString();
-                Response.Redirect("/SystemAdmin/UserInfo.aspx");
-            }
-            else
-            {
-                this.ltMsg.Text = "登入失敗，請檢查帳號或密碼是否正確";
-                return;
-            }
+            //if(string.Compare(dr["Account"].ToString(), inp_Account,true) == 0 && string.Compare(dr["PWD"].ToString(), inp_PWD,false) == 0)
+            //{
+            //    this.Session["UserLoginInfo"] = dr["Account"].ToString();
+            //    Response.Redirect("/SystemAdmin/UserInfo.aspx");
+            //}
+            //else
+            //{
+            //    this.ltMsg.Text = "登入失敗，請檢查帳號或密碼是否正確";
+            //    return;
+            //}
         }
     }
 }
